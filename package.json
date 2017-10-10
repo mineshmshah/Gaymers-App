@@ -4,7 +4,7 @@
   "description": "web app for gaymers community",
   "main": "index.js",
   "scripts": {
-    "test": "nyc istanbul cover ./tests/* | tap-spec",
+    "test": "nyc istanbul cover tape ./tests/* | tap-spec",
     "start": "node src/index.js",
     "devStart": "nodemon src/index.js"
   },

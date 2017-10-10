@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 //const favicon = require('serve-favicon');
+
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
 require('env2')('./config.env');
@@ -36,3 +37,4 @@ app.get('/auth/facebook', passport.authenticate('facebook'));
 //app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 module.exports = app;
+
