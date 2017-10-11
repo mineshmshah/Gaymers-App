@@ -1,9 +1,19 @@
 BEGIN;
 
-DROP TABLE IF EXISTS [table-name] CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 
-CREATE TABLE [table-name] (id SERIAL PRIMARY KEY,[rest of schema]);
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    fb_id INTEGER UNIQUE NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(300) ,
+    avatar VARCHAR(50) NOT NULL,
+    newUser BOOLEAN DEFAULT false
+);
 
-INSERT INTO [table-name] (fields) VALUES ();
+
+INSERT INTO users (fb_id,name,email,avatar,newUser) VALUES
+  (12,'Aisha','aisha@fac.com','pig.png', 'false') ,
+  (13,'Yahia','yahia@fac.com','cow.png', 'false');
 
 COMMIT;

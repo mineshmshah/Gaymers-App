@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const User = require('./model/getUserData');
 //const favicon = require('serve-favicon');
 
 const passport = require('passport');
@@ -7,8 +8,8 @@ const Strategy = require('passport-facebook').Strategy;
 require('env2')('./config.env');
 
 
-console.log(process.env.FB_CLIENTID);
-console.log(process.env.FB_SECRET);
+
+
 
 passport.use(new Strategy({
 
@@ -16,11 +17,18 @@ passport.use(new Strategy({
 	clientSecret: process.env.FB_SECRET,
 	callbackURL: 'http://localhost:3000/auth/facebook/callback',
 	profileFields: ['email','displayName','profileUrl','picture']
- },(accessToken,refreshToken,profile,cb)=>{
+},(accessToken,refreshToken,profile,cb)=>{
 	console.log('access token',accessToken);
-  console.log('refresh token',refreshToken);
-  console.log('profile token',profile);
-  console.log('cb token',cb);
+	console.log('refresh token',refreshToken);
+	console.log('profile token',profile);
+	console.log('cb token',cb);
+	User.fb_id(accessToken.id,(err,Obj)=>{
+		if(err){
+			console.log('error');
+		}else{
+			console.log(Obj)
+		}
+	});
 	//return cb(null, profile);
 }));
 
