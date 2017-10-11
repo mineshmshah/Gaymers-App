@@ -6,7 +6,9 @@
   "scripts": {
     "test": "nyc istanbul cover tape ./tests/* | tap-spec",
     "start": "node src/index.js",
-    "devStart": "nodemon src/index.js"
+    "devStart": "nodemon src/index.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run devStart\" \"npm run client\""
   },
   "author": "Aseel",
   "license": "ISC",
@@ -29,6 +31,7 @@
   "dependencies": {
     "autoprefixer": "^7.1.4",
     "body-parser": "^1.18.2",
+    "concurrently": "^3.5.0",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^1.3.2",
     "env2": "^2.2.0",
