@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const cookieSession = require('cookie-session');
 const getUserData = require('./model/getUserData');
 const postFBData = require('./model/postUserDetails');
 //const favicon = require('serve-favicon');
@@ -9,50 +10,59 @@ const Strategy = require('passport-facebook').Strategy;
 require('env2')('./config.env');
 
 
+passport.serializeUser((user, done)=> {
+	done(null, user.id);
+});
 
-
+passport.deserializeUser((id, done) => {
+	getUserData.id(id,(err,userObj)=>{
+		if (err){throw err;}
+		done(null,userObj);
+	});
+});
 
 passport.use(new Strategy({
 
 	clientID: process.env.FB_CLIENTID,
 	clientSecret: process.env.FB_SECRET,
-	callbackURL: 'http://localhost:3000/auth/facebook/callback',
+	callbackURL: '/auth/facebook/callback',
 	profileFields: ['email','displayName','profileUrl','picture.type(large)']
-},(accessToken,refreshToken,profile,cb)=>{
-	// console.log('access token',accessToken);
-	// console.log('refresh token',refreshToken);
-	// console.log('profile token',profile);
-	// console.log('cb token',cb);
+},(accessToken,refreshToken,profile,done)=>{
+
 	getUserData.fb_id(profile._json.id,(err,userObj)=>{
-		//If we have an error the user was not found - make a new record
+		// This is an error coming from pg
 		if(err) {
-			console.log('Databasee error',err);
+			console.log('Database error',err);
 		}
+		// The search as successful but an empty string was returned so add profile
 		if(!userObj){
 			postFBData.users(profile._json.id, profile._json.name, profile._json.email, profile._json.picture.data.url, 'true' , profile._json.link,(err,userObj)=>{
 				if (err){
 					console.log(err);
+				}else{
+					done(null,userObj);
 				}
 			});
 		} else{
-			//we already have a record so we don't need to save anew record
-			console.log('UserExists in the DB');
+			//we have found a matching record so user exists in the DB
+			done(null,userObj);
+
 		}
 	});
 	//return cb(null, profile);
 }));
 
-
-// passport.serializeUser(function(user, cb) {
-// 	cb(null, user);
-// });
-//
-// passport.deserializeUser(function(obj, cb) {
-// 	cb(null, obj);
-// });
-
-
 const app = express();
+
+app.use(
+	cookieSession({
+		maxAge:30 * 24 * 60 * 60* 1000,
+		keys: [process.env.COOKIEKEY]
+	})
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/auth/facebook', passport.authenticate('facebook',{ authType: 'rerequest', scope: ['email']}));
 
