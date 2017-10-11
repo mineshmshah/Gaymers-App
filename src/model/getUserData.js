@@ -13,7 +13,7 @@ getUser.fb_id = (fb_id, callback) => {
 		if (err) {
 			return callback(new Error('Database error while fetching user'));
 		}
-		console.log(response);
+
 		callback(null, response.rows[0]);
 	});
 };
@@ -29,7 +29,7 @@ getUser.id = (id, callback) => {
 		if (err) {
 			return callback(new Error('Database error while fetching user'));
 		}
-		console.log(response);
+
 		callback(null, response.rows[0]);
 	});
 };
