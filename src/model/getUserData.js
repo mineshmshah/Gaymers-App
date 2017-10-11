@@ -1,7 +1,5 @@
 const connect = require('../../db/db_connections');
 
-console.log(connect);
-
 const getUser = {};
 
 getUser.fb_id = (fb_id, callback) => {
@@ -15,6 +13,7 @@ getUser.fb_id = (fb_id, callback) => {
 		if (err) {
 			return callback(new Error('Database error while fetching user'));
 		}
+		console.log(response);
 		callback(null, response.rows[0]);
 	});
 };
