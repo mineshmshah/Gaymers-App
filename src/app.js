@@ -64,21 +64,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/auth/facebook', passport.authenticate('facebook',{ authType: 'rerequest', scope: ['email']}));
-
-//add parameter hre to tell if new user from the database
-app.get('/auth/facebook/callback', passport.authenticate('facebook'));
-
-app.get('/api/current_user',(req,res)=>{
-	res.send(req.user);
-
-});
-
-app.get('/api/logout',(req,res)=>{
-	//removes the cookie
-	req.logout();
-	res.send(req.user);
-});
+require('./routes/authRoutes')(app);
 
 //app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, '..', 'public')));
