@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { reduxForm, Field } from 'redux-form';
+
 
 class Form extends Component{
 	renderRegisteredUser(){
@@ -11,6 +13,10 @@ class Form extends Component{
 		return(
 			<div>
         This is a form
+				<form onSubmit={this.props.handleSubmit(values => console.log(values))}>
+				<Field type='text' name='formTitle' component='input' />
+				<button type='submit'>Submit</button>
+				</form>
 				<Link
 				to={this.renderRegisteredUser()}
 				className="btn btn-primary">
@@ -24,4 +30,6 @@ class Form extends Component{
 function mapStateToProps({auth}){
 	return {auth};
 }
-export default Form;
+export default reduxForm ({
+	form: 'welcomeForm'
+})(Form);
