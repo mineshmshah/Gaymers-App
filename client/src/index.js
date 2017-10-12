@@ -1,3 +1,5 @@
+import 'tachyons/css/tachyons.min.css';
+import './style.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
