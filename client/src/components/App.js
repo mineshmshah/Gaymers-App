@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { BrowserRouter , Route } from 'react-router-dom';
 import * as actions  from '../actions';
 import Header from './Header';
+import Form from './Form'
 
 
-const Form = ()=><h2>Form</h2>;
 const Profile = ()=><h2>Profile</h2>;
 const Landing = ()=><h2>Landing</h2>;
 
@@ -24,7 +24,7 @@ class App extends Component{
 					<div>
 						<Header />
 						<Route exact={true} path="/" component={Landing} />
-						<Route  path="/welcome" component={Form} />
+						<Route  exact path="/welcome" component={Form} />
 						<Route path="/profile" component={Profile}/>
 					</div>
 				</BrowserRouter>
