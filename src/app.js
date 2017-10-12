@@ -3,6 +3,7 @@ const path = require('path');
 const cookieSession = require('cookie-session');
 const getUserData = require('./model/getUserData');
 const postFBData = require('./model/postUserDetails');
+const updateUserData = require('./model/updateUserDetails');
 //const favicon = require('serve-favicon');
 
 const passport = require('passport');
@@ -44,6 +45,7 @@ passport.use(new Strategy({
 				}
 			});
 		} else{
+
 			//we have found a matching record so user exists in the DB
 			done(null,userObj);
 
@@ -53,7 +55,6 @@ passport.use(new Strategy({
 }));
 
 const app = express();
-console.log(process.env.COOKIEKEY);
 app.use(
 	cookieSession({
 		maxAge:30 * 24 * 60 * 60* 1000,
@@ -65,8 +66,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/authRoutes')(app);
+updateUserData.newUser(13, (err, obj)=>{
+	console.log("whatevs");
+	if(err) { console.log("didn't work!")}
+	else {
+		console.log(obj);
+	}
+});
 
 //app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 module.exports = app;
-
