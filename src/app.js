@@ -1,5 +1,8 @@
 const express = require('express');
 const path = require('path');
+const cookieSession = require('cookie-session');
+const getUserData = require('./model/getUserData');
+const postFBData = require('./model/postUserDetails');
 //const favicon = require('serve-favicon');
 
 const passport = require('passport');
@@ -7,32 +10,75 @@ const Strategy = require('passport-facebook').Strategy;
 require('env2')('./config.env');
 
 
-console.log(process.env.FB_CLIENTID);
-console.log(process.env.FB_SECRET);
+passport.serializeUser((user, done)=> {
+	done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+	getUserData.id(id,(err,userObj)=>{
+		if (err){throw err;}
+		done(null,userObj);
+	});
+});
 
 passport.use(new Strategy({
 
 	clientID: process.env.FB_CLIENTID,
 	clientSecret: process.env.FB_SECRET,
-	callbackURL: 'http://localhost:3000/auth/facebook/callback',
-},function(accessToken,refreshToken,profile,cb){
-	//console.log(accessToken);
+	callbackURL: '/auth/facebook/callback',
+	profileFields: ['email','displayName','profileUrl','picture.type(large)']
+},(accessToken,refreshToken,profile,done)=>{
+
+	getUserData.fb_id(profile._json.id,(err,userObj)=>{
+		// This is an error coming from pg
+		if(err) {
+			console.log('Database error',err);
+		}
+		// The search as successful but an empty string was returned so add profile
+		if(!userObj){
+			postFBData.users(profile._json.id, profile._json.name, profile._json.email, profile._json.picture.data.url, 'true' , profile._json.link,(err,userObj)=>{
+				if (err){
+					console.log(err);
+				}else{
+					done(null,userObj);
+				}
+			});
+		} else{
+			//we have found a matching record so user exists in the DB
+			done(null,userObj);
+
+		}
+	});
 	//return cb(null, profile);
 }));
 
-
-// passport.serializeUser(function(user, cb) {
-// 	cb(null, user);
-// });
-//
-// passport.deserializeUser(function(obj, cb) {
-// 	cb(null, obj);
-// });
-
-
 const app = express();
+console.log(process.env.COOKIEKEY);
+app.use(
+	cookieSession({
+		maxAge:30 * 24 * 60 * 60* 1000,
+		keys: [process.env.COOKIEKEY]
+	})
+);
 
-app.get('/auth/facebook', passport.authenticate('facebook'));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/auth/facebook', passport.authenticate('facebook',{ authType: 'rerequest', scope: ['email']}));
+
+//add parameter hre to tell if new user from the database
+app.get('/auth/facebook/callback', passport.authenticate('facebook'));
+
+app.get('/api/current_user',(req,res)=>{
+	res.send(req.user);
+
+});
+
+app.get('/api/logout',(req,res)=>{
+	//removes the cookie
+	req.logout();
+	res.send(req.user);
+});
 
 //app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, '..', 'public')));
