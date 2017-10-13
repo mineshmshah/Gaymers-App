@@ -7,7 +7,6 @@ module.exports = app =>{
 	app.get('/auth/facebook/callback',
 		passport.authenticate('facebook'),
 		(req,res)=>{
-			console.log('auth req is', req.user);
 			if(req.user.newuser){
 				res.redirect('/welcome');
 			}else{
