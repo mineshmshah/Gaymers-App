@@ -6,66 +6,72 @@ import * as actions from '../actions/index';
 
 const colors = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet'];
 
-let InitializeFromStateForm = props => {
+class InitializeFromStateForm extends Component {
+
+	componentDidMount(){
+
+	}
 
 
-	
-	const {handleSubmit, pristine, reset, submitting} = props;
+	render(){
+		const {handleSubmit, pristine, reset, submitting } = this.props;
+    const { avatar } = this.props.auth;
+		//const {avatar} = props.auth
+		return (
+			<form onSubmit={handleSubmit}>
 
-
-	return (
-		<form onSubmit={handleSubmit}>
-
-			<div>
-				<label>Full Name</label>
 				<div>
-					<Field
-						name="name"
-						component="input"
-						type="text"
-						placeholder="First Name"
-					/>
+					<label>Full Name</label>
+					<div>
+						<Field
+							name="name"
+							component="input"
+							type="text"
+							placeholder="First Name"
+						/>
+					</div>
 				</div>
-			</div>
-			<div>
-				<label>Avatar</label>
 				<div>
+					<label>Avatar</label>
+					<div>
+						<img src={avatar}/>
+					</div>
 				</div>
-			</div>
-			<div>
-				<label>E-mail</label>
 				<div>
-					<Field
-						name="email"
-						component="input"
-						type="text"
-						placeholder="Last Name"
-					/>
+					<label>E-mail</label>
+					<div>
+						<Field
+							name="email"
+							component="input"
+							type="text"
+							placeholder="Last Name"
+						/>
+					</div>
 				</div>
-			</div>
-			<div>
-				<label>Bio</label>
 				<div>
-					<Field name="avatar" component="textarea"/>
+					<label>Bio</label>
+					<div>
+						<Field name="avatar" component="textarea"/>
+					</div>
 				</div>
-			</div>
-			<div>
-				<button type="submit" disabled={pristine || submitting}>
+				<div>
+					<button type="submit" disabled={pristine || submitting}>
 						Submit
-				</button>
-				<button type="button" disabled={pristine || submitting} onClick={reset}>
+					</button>
+					<button type="button" disabled={pristine || submitting} onClick={reset}>
 						Undo Changes
-				</button>
-			</div>
-		</form>
-	);
-};
-
+					</button>
+				</div>
+			</form>
+		);
+	}
+}
 
 
 // Decorate with reduxForm(). It will read the initialValues prop provided by connect()
 InitializeFromStateForm = reduxForm({
-	form: 'initializeFromState' // a unique identifier for this form
+	form: 'initializeFromState', // a unique identifier for this form
+	enableReinitialize : true
 })(InitializeFromStateForm);
 
 // You have to connect() to any reducers that you wish to connect to yourself
