@@ -4,6 +4,8 @@ const cookieSession = require('cookie-session');
 const getUserData = require('./model/getUserData');
 const postFBData = require('./model/postUserDetails');
 const updateUserData = require('./model/updateUserDetails');
+const bodyParser = require('body-parser');
+
 //const favicon = require('serve-favicon');
 
 const passport = require('passport');
@@ -55,6 +57,7 @@ passport.use(new Strategy({
 }));
 
 const app = express();
+app.use(bodyParser.json());
 app.use(
 	cookieSession({
 		maxAge:30 * 24 * 60 * 60* 1000,
@@ -66,9 +69,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/authRoutes')(app);
+require('./routes/dbRoutes')(app);
 updateUserData.newUser(13, (err, obj)=>{
-	console.log("whatevs");
-	if(err) { console.log("didn't work!")}
+
+	if(err) { console.log(err)}
 	else {
 		console.log(obj);
 	}

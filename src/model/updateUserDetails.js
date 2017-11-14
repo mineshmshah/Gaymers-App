@@ -3,7 +3,6 @@ const connect = require('../../db/db_connections');
 const update = {};
 
 update.newUser = (fb_id, callback)=>{
-  console.log(fb_id);
 
 	const sqlQuery = `
     UPDATE users SET newUser = 'false' WHERE fb_id ='${fb_id}'
