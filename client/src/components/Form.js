@@ -4,19 +4,30 @@ import { Link } from 'react-router-dom';
 import { reduxForm, Field } from 'redux-form';
 import * as actions from '../actions/index';
 
-const colors = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet'];
 
 class InitializeFromStateForm extends Component {
 
-	componentDidMount(){
-
+	renderAvatar(){
+		// if(!this.props.initialValues){
+		// 	 return;
+		// } else{
+		// 	return this.props.initialValues.avatar;
+		// }
+		switch(this.props.auth){
+		case null:
+			return;
+		case false:
+			return;
+		default:
+			return this.props.auth.avatar;
+		}
 	}
 
+	componentWillMount(){
+	}
 
 	render(){
 		const {handleSubmit, pristine, reset, submitting } = this.props;
-    const { avatar } = this.props.auth;
-		//const {avatar} = props.auth
 		return (
 			<form onSubmit={handleSubmit}>
 
@@ -34,16 +45,17 @@ class InitializeFromStateForm extends Component {
 				<div>
 					<label>Avatar</label>
 					<div>
-						<img src={avatar}/>
+						<img src={this.renderAvatar()}/>
 					</div>
 				</div>
 				<div>
 					<label>E-mail</label>
 					<div>
 						<Field
-							name="email"
-							component="input"
-							type="text"
+							name="avatar"
+							component="img"
+
+
 							placeholder="Last Name"
 						/>
 					</div>
@@ -67,21 +79,40 @@ class InitializeFromStateForm extends Component {
 	}
 }
 
-
 // Decorate with reduxForm(). It will read the initialValues prop provided by connect()
-InitializeFromStateForm = reduxForm({
-	form: 'initializeFromState', // a unique identifier for this form
-	enableReinitialize : true
-})(InitializeFromStateForm);
-
-// You have to connect() to any reducers that you wish to connect to yourself
-InitializeFromStateForm = connect(
+//You need to pass the initialValues props into the form. To do that wrap the form with the connect function. See Initialize From State in the documentation.
+export default connect(
 	state => ({
 		auth:state.auth,
 		initialValues: state.auth // pull initial values from account reducer
 	}),
 	{ actions } // bind account loading action creator
-)(InitializeFromStateForm);
+)(
+	reduxForm({
+		form: 'initializeFromState', // a unique identifier for this form
+		enableReinitialize : true
+	})(InitializeFromStateForm)
+);
 
-export default InitializeFromStateForm;
 
+
+
+
+
+// // Decorate with reduxForm(). It will read the initialValues prop provided by connect()
+// InitializeFromStateForm = reduxForm({
+//   form: 'initializeFromState', // a unique identifier for this form
+//   enableReinitialize : true
+// })(InitializeFromStateForm);
+//
+// // You have to connect() to any reducers that you wish to connect to yourself
+// InitializeFromStateForm = connect(
+//   state => ({
+//     auth:state.auth,
+//     initialValues: state.auth // pull initial values from account reducer
+//   }),
+//   { actions } // bind account loading action creator
+// )(InitializeFromStateForm);
+//
+// export default InitializeFromStateForm;
+//

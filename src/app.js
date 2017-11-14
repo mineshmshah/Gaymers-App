@@ -71,8 +71,8 @@ app.use(passport.session());
 require('./routes/authRoutes')(app);
 require('./routes/dbRoutes')(app);
 updateUserData.newUser(13, (err, obj)=>{
-	console.log("whatevs");
-	if(err) { console.log("didn't work!")}
+
+	if(err) { console.log(err)}
 	else {
 		console.log(obj);
 	}
