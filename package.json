@@ -10,7 +10,7 @@
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run devStart\" \"npm run client\""
   },
-  "author": "Aseel",
+  "author": "Minesh Shah",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.26.0",
