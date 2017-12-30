@@ -42,6 +42,7 @@ passport.use(new Strategy({
 			postFBData.users(profile._json.id, profile._json.name, profile._json.email, profile._json.picture.data.url, 'true' , profile._json.link,(err,userObj)=>{
 				if (err){
 					console.log(err);
+					return done(err);
 				}else{
 					done(null,userObj);
 				}
