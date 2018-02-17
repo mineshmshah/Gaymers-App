@@ -3,7 +3,30 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { reduxForm, Field } from 'redux-form';
 import * as actions from '../actions/index';
+import styled from 'styled-components';
 
+const Title = styled.h1`
+  font-size: 1.5em;
+  text-align: center;
+  color: palevioletred;
+`;
+
+const NewField = styled(Field).attrs({
+	name: props => props.name,
+	component: props => props.component,
+	type: props => props.type,
+	placeholder: props => props.placeholder,
+})`
+  font-size: 14px;
+  color: rgba(45,51,65,0.85);
+  box-shadow: inset 0 1px 3px #ddd;
+  border-radius: 4px;
+  height:35px;
+  width:350px;
+  border-style: none;
+  padding:10px;
+  
+`;
 
 class InitializeFromStateForm extends Component {
 
@@ -29,8 +52,20 @@ class InitializeFromStateForm extends Component {
 	render(){
 		const {handleSubmit, pristine, reset, submitting } = this.props;
 		return (
-			<form onSubmit={handleSubmit}>
 
+			<form onSubmit={handleSubmit}>
+				<Title>HELLO</Title>
+                <div>
+                    <label>New Style Full Name</label>
+                    <div>
+                        <NewField
+                            name="name"
+                            component="input"
+                            type="text"
+                            placeholder="First Name"
+                        />
+                    </div>
+                </div>
 				<div>
 					<label>Full Name</label>
 					<div>
