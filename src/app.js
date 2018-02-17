@@ -14,6 +14,7 @@ require('env2')('./config.env');
 
 
 passport.serializeUser((user, done)=> {
+	console.log('serialise user object: ', user);
 	done(null, user.id);
 });
 
