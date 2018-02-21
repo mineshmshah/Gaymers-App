@@ -5,27 +5,56 @@ import { reduxForm, Field } from 'redux-form';
 import * as actions from '../actions/index';
 import styled from 'styled-components';
 
+// Styled Components
 const Title = styled.h1`
   font-size: 1.5em;
   text-align: center;
-  color: palevioletred;
+  color: aliceblue;
 `;
 
-const NewField = styled(Field).attrs({
+const FormLabel = styled.label`
+ color:aliceblue;
+ font-size: 12px;	
+`
+
+const Wrapper = styled.div`
+  color: rgba(45,51,65,0.85);
+  padding: 20px;
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+`;
+
+const FormInputField = styled(Field).attrs({
 	name: props => props.name,
 	component: props => props.component,
 	type: props => props.type,
 	placeholder: props => props.placeholder,
+    maxlength: props => props.maxlength,
+
 })`
   font-size: 14px;
-  color: rgba(45,51,65,0.85);
   box-shadow: inset 0 1px 3px #ddd;
   border-radius: 4px;
-  height:35px;
+  height:${props => props.component==='textarea' ? '100px': '35px' };
   width:350px;
   border-style: none;
   padding:10px;
-  
+  margin: 10px 0;
+  box-sizing: border-box;
+  resize:none;
+`;
+
+const FormImageField = styled.img.attrs({
+    src: props => props.src,
+})`
+  box-shadow: inset 0 1px 3px #ddd;
+  border-radius: 4px;
+  height:100px;
+  width: 100px;
+  border-style: none;
+  margin: 10px 0;
+  box-sizing: border-box;
 `;
 
 class InitializeFromStateForm extends Component {
@@ -52,64 +81,53 @@ class InitializeFromStateForm extends Component {
 	render(){
 		const {handleSubmit, pristine, reset, submitting } = this.props;
 		return (
+			<Wrapper>
+				<form onSubmit={handleSubmit}>
+					<Title>Basic Info</Title>
+					<div>
+						<FormLabel>Full Name</FormLabel>
+						<div>
+							<FormInputField
+								name="name"
+								component="input"
+								type="text"
+								placeholder="First Name"
+							/>
+						</div>
+					</div>
+					<div>
+						<FormLabel>Avatar</FormLabel>
+						<div>
+							<FormImageField src={this.renderAvatar()}/>
+						</div>
+					</div>
+					<div>
+						<FormLabel>E-mail</FormLabel>
+						<div>
+							<FormInputField
+								name="email"
+								component="input"
+								placeholder="email"
+							/>
+						</div>
+					</div>
+					<div>
+						<FormLabel>Bio</FormLabel>
+						<div>
+							<FormInputField name="bio" component="textarea" placeholder="Please enter a summary" maxlength="140"/>
+						</div>
+					</div>
+					<div>
+						<button type="submit" disabled={pristine || submitting}>
+                            Submit
+						</button>
+						<button type="button" disabled={pristine || submitting} onClick={reset}>
+                            Undo Changes
+						</button>
+					</div>
+				</form>
+			</Wrapper>
 
-			<form onSubmit={handleSubmit}>
-				<Title>HELLO</Title>
-                <div>
-                    <label>New Style Full Name</label>
-                    <div>
-                        <NewField
-                            name="name"
-                            component="input"
-                            type="text"
-                            placeholder="First Name"
-                        />
-                    </div>
-                </div>
-				<div>
-					<label>Full Name</label>
-					<div>
-						<Field
-							name="name"
-							component="input"
-							type="text"
-							placeholder="First Name"
-						/>
-					</div>
-				</div>
-				<div>
-					<label>Avatar</label>
-					<div>
-						<img src={this.renderAvatar()}/>
-					</div>
-				</div>
-				<div>
-					<label>E-mail</label>
-					<div>
-						<Field
-							name="avatar"
-							component="img"
-
-
-							placeholder="Last Name"
-						/>
-					</div>
-				</div>
-				<div>
-					<label>Bio</label>
-					<div>
-						<Field name="avatar" component="textarea"/>
-					</div>
-				</div>
-				<div>
-					<button type="submit" disabled={pristine || submitting}>
-						Submit
-					</button>
-					<button type="button" disabled={pristine || submitting} onClick={reset}>
-						Undo Changes
-					</button>
-				</div>
-			</form>
 		);
 	}
 }

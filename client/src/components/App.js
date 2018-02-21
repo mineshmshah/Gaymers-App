@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import { BrowserRouter , Route } from 'react-router-dom';
 import * as actions  from '../actions';
 import Header from './Header';
-import Form from './Form'
+import Form from './Form';
+import AddGame from './AddGame';
 
 
 const Profile = ()=><h2>Profile</h2>;
@@ -26,6 +27,7 @@ class App extends Component{
 						<Route exact path="/" component={Landing} />
 						<Route  exact path="/welcome" component={Form} />
 						<Route path="/profile" component={Profile}/>
+						<Route path="/games" component={AddGame}/>
 					</div>
 				</BrowserRouter>
 			</div>
