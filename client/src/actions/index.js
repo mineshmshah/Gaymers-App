@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_USER, REGISTER_USER, FETCH_GAME, REQUEST_GAME } from './types';
+import { FETCH_USER, REGISTER_USER, FETCH_GAME } from './types';
 
 // Using redux thunk here
 // It does not return an action directly but when called instantly returns a function
@@ -24,6 +24,8 @@ export const fetchUser = ()=> async dispatch=>{
 //   }
 // }
 
+
+
 export const fetchGames = (search)=> async dispatch=>{
     const proxy = 'https://still-eyrie-36200.herokuapp.com/'
     const res = await axios.get(`${proxy}https://api-2445582011268.apicast.io/games/?search=${search}&fields=name,category,genres,game_modes,cover,first_release_date,summary`,{
@@ -38,6 +40,6 @@ export const fetchGames = (search)=> async dispatch=>{
 };
 
 export const requestGames = () =>({
-    type: REQUEST_GAME
+    type:'REQUEST_GAME'
 })
 

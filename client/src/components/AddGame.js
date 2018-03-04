@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions';
-
+import { getIsFetching, getVisibleGames } from '../reducers'
 
 class AddGame extends Component{
     constructor(props){
@@ -16,7 +16,8 @@ class AddGame extends Component{
         this.setState({term:event.target.value})
     }
     onFormSubmit(event){
-        const {requestGames , fetchGames} = this.props;
+        const { isFetching, requestGames, fetchGames } = this.props;
+
         event.preventDefault();
         // we need to go fetch weather data
         requestGames();
@@ -24,14 +25,12 @@ class AddGame extends Component{
         this.setState({term:'' })
     }
     renderContent(){
-
-        if (!this.props.fetch){
+        const { isFetching , games} = this.props
+        console.log( isFetching)
+        if (isFetching && !games.length){
             return <p>Loading</p>
-        } else if (this.prop){
-            if(this.prop.game){
-                return <div>{this.prop.game.map(this.getGame)}</div>
-
-            }
+        } else if (games){
+            return <div>{games.map(this.getGame)}</div>
         }
 
     }
@@ -65,8 +64,11 @@ class AddGame extends Component{
 	}
 }
 
-const mapStateToProps = ({game,fetch}) => {
-    return {game,fetch}
+const mapStateToProps = (state) => {
+    return {
+        isFetching :getIsFetching(state),
+        games:getVisibleGames(state),
+    }
 }
 
 export default connect(mapStateToProps,actions)(AddGame);
