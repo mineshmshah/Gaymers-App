@@ -35,6 +35,14 @@ export const addGame = (search)=> async dispatch=>{
             'Content-Type':'application/json',
         }
     })
-    dispatch({type:ADD_GAME, payload:res.data});
+    dispatch({type:FETCH_GAME, payload:res.data});
     console.log('gamedata:',res.data)
 };
+
+export const requestGames = () =>({
+    type:'REQUEST_GAME'
+})
+
+export const receiveGames = () =>({
+    type:'RECEIVE_GAME'
+})

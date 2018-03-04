@@ -20,7 +20,16 @@ class AddGame extends Component{
         this.props.addGame(this.state.term);
         this.setState({term:'' })
     }
+    renderContent(){
+        const { isFetching } = this.props
+        if (isFetching){
+            return <p>Loading</p>
+        } else{
+            return <div>{this.props.game.map(this.getGame)}</div>
+        }
+        // return <div>{this.props.game.map(this.getGame)}</div>
 
+    }
     styleCSS = {
         padding:'20px'
     };
@@ -35,7 +44,6 @@ class AddGame extends Component{
     }
 
 	render(){
-        const { isFetching } = this.props
 		return(
 			<div style={this.styleCSS}>
                 <form onSubmit={this.onFormSubmit}>
@@ -45,7 +53,9 @@ class AddGame extends Component{
                     <button type="submit">
                         Search
                     </button>
-                    <div>{this.props.game.map(this.getGame)}</div>
+                    {this.renderContent()}
+                     <div>{this.props.game.map(this.getGame)}</div>
+
                 </form>
 			</div>
 		);
