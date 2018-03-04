@@ -1,10 +1,15 @@
 import { combineReducers } from 'redux';
 import authReducers from './authReducer';
 import { reducer as formReducer } from 'redux-form';
-import gameReducer from "./gameReducer";
+import gameReducer, * as fromGames from './gameReducer';
+import loadingReducer from "./loadingReducer";
 
-export default combineReducers({
+const allReducers= combineReducers({
 	auth: authReducers,
 	form: formReducer,
-	game: gameReducer
-});
+	game: gameReducer,
+	fetch: loadingReducer
+})
+
+export default allReducers;
+

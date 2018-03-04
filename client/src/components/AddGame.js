@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import {addGame} from '../actions';
+import * as actions from '../actions';
+
 
 class AddGame extends Component{
     constructor(props){
@@ -15,19 +16,23 @@ class AddGame extends Component{
         this.setState({term:event.target.value})
     }
     onFormSubmit(event){
+        const {requestGames , fetchGames} = this.props;
         event.preventDefault();
         // we need to go fetch weather data
-        this.props.addGame(this.state.term);
+        requestGames();
+        fetchGames(this.state.term);
         this.setState({term:'' })
     }
     renderContent(){
-        const { isFetching } = this.props
-        if (isFetching){
+
+        if (!this.props.fetch){
             return <p>Loading</p>
-        } else{
-            return <div>{this.props.game.map(this.getGame)}</div>
+        } else if (this.prop){
+            if(this.prop.game){
+                return <div>{this.prop.game.map(this.getGame)}</div>
+
+            }
         }
-        // return <div>{this.props.game.map(this.getGame)}</div>
 
     }
     styleCSS = {
@@ -54,16 +59,14 @@ class AddGame extends Component{
                         Search
                     </button>
                     {this.renderContent()}
-                     <div>{this.props.game.map(this.getGame)}</div>
-
                 </form>
 			</div>
 		);
 	}
 }
 
-function mapStateToProps({ game }){
-    return { game }
+const mapStateToProps = ({game,fetch}) => {
+    return {game,fetch}
 }
 
-export default connect(mapStateToProps,{addGame})(AddGame);
+export default connect(mapStateToProps,actions)(AddGame);
