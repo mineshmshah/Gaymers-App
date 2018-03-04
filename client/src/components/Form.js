@@ -30,7 +30,7 @@ const FormInputField = styled(Field).attrs({
 	component: props => props.component,
 	type: props => props.type,
 	placeholder: props => props.placeholder,
-    maxlength: props => props.maxlength,
+    maxLength: props => props.maxLength,
 
 })`
   font-size: 14px;
@@ -65,7 +65,7 @@ class InitializeFromStateForm extends Component {
 		// } else{
 		// 	return this.props.initialValues.avatar;
 		// }
-		switch(this.props.auth){
+		switch(this.props.initialValues){
 		case null:
 			return;
 		case false:
@@ -114,7 +114,7 @@ class InitializeFromStateForm extends Component {
 					<div>
 						<FormLabel>Bio</FormLabel>
 						<div>
-							<FormInputField name="bio" component="textarea" placeholder="Please enter a summary" maxlength="140"/>
+							<FormInputField name="bio" component="textarea" placeholder="Please enter a summary" maxLength="140"/>
 						</div>
 					</div>
 					<div>

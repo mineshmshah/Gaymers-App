@@ -25,7 +25,17 @@ class AddGame extends Component{
         padding:'20px'
     };
 
+    getGame(data){
+        return(
+            <div>
+            <pre key={data.id}>{data.name}</pre>
+            <img src ={data.cover.url} alt = "" />
+            </div>
+        )
+    }
+
 	render(){
+        const { isFetching } = this.props
 		return(
 			<div style={this.styleCSS}>
                 <form onSubmit={this.onFormSubmit}>
@@ -35,10 +45,15 @@ class AddGame extends Component{
                     <button type="submit">
                         Search
                     </button>
+                    <div>{this.props.game.map(this.getGame)}</div>
                 </form>
 			</div>
 		);
 	}
 }
 
-export default connect(null,{addGame})(AddGame);
+function mapStateToProps({ game }){
+    return { game }
+}
+
+export default connect(mapStateToProps,{addGame})(AddGame);

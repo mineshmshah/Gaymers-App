@@ -24,27 +24,17 @@ export const fetchUser = ()=> async dispatch=>{
 //   }
 // }
 
+
+
 export const addGame = (search)=> async dispatch=>{
-    const res = await fetch(`https://api-2445582011268.apicast.io/games/?search=${search}&fields=name,category,genres,game_modes,cover,first_release_date,summary`, {
-        method: 'GET',
-        headers: { 'user-key':'18430b84d6bfaab720b08eeda8f2810d',
+    const proxy = 'https://still-eyrie-36200.herokuapp.com/'
+    const res = await axios.get(`${proxy}https://api-2445582011268.apicast.io/games/?search=${search}&fields=name,category,genres,game_modes,cover,first_release_date,summary`,{
+        headers: {
+            'user-key':'18430b84d6bfaab720b08eeda8f2810d',
             'Accept':'application/json',
-            'Content-Type':'application/json', }
+            'Content-Type':'application/json',
+        }
     })
     dispatch({type:ADD_GAME, payload:res.data});
-    console.log('gamedata:',res.date)
+    console.log('gamedata:',res.data)
 };
-
-//
-// export const addGame = (search)=> async dispatch=>{
-//     axios.defaults.headers.common['user-key'] = '18430b84d6bfaab720b08eeda8f2810d';
-//     const res = await axios.get(`https://api-2445582011268.apicast.io/games/?search=${search}&fields=name,category,genres,game_modes,cover,first_release_date,summary`,{
-//         headers: {
-//             'user-key':'18430b84d6bfaab720b08eeda8f2810d',
-//             'Accept':'application/json',
-//             'Content-Type':'application/json',
-//         }
-//     })
-//     dispatch({type:ADD_GAME, payload:res.data});
-//     console.log('gamedata:',res.date)
-// };
