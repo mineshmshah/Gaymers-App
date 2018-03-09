@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_USER, REGISTER_USER, FETCH_GAME } from './types';
+import {FETCH_USER, REGISTER_USER, FETCH_GAME, REQUEST_GAME} from './types';
 
 // Using redux thunk here
 // It does not return an action directly but when called instantly returns a function
@@ -39,7 +39,10 @@ export const fetchGames = (search)=> async dispatch=>{
     console.log('gamedata:',res.data)
 };
 
-export const requestGames = () =>({
-    type:'REQUEST_GAME'
-})
+export const requestGames = () => async dispatch =>{
+    console.log('I get here');
+    dispatch ({
+        type: REQUEST_GAME
+    })
+}
 
